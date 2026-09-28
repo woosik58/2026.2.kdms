@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>진로진학설명회 학부모 등록</title>
+<script>
+/* ============================================================
+   ▼▼▼ 여기에 Apps Script 웹 앱 주소를 붙여넣으세요 ▼▼▼
+   따옴표('  ') 안에 넣고, 따옴표는 지우지 마세요.
+   ============================================================ */
+var API_URL = 'https://script.google.com/macros/s/AKfycbxgz-NIdgYzaZat0w9GIx-zmMCfHQEl3g74qctruxYkFKdJREGMYHHYaLevtl21E8nlXw/exec';
+</script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    background:#f3f5fb;color:#1b2340;padding:24px 16px 48px;word-break:keep-all}
+  .wrap{max-width:460px;margin:0 auto}
+  header{background:#1e3a8a;background:linear-gradient(135deg,#1e3a8a,#3b5bdb);color:#fff;
+    border-radius:20px;padding:26px 22px;margin-bottom:16px}
+  .school{font-size:14px;font-weight:600;opacity:.85}
+  h1{font-size:24px;font-weight:800;margin:6px 0 8px;line-height:1.3}
+  .meta{font-size:14px;opacity:.9;line-height:1.6}
+  .count{display:none;margin-top:12px;background:rgba(255,255,255,.2);padding:6px 12px;
+    border-radius:999px;font-size:13px;font-weight:700;width:max-content}
+  .card{background:#fff;border-radius:20px;padding:24px 20px;box-shadow:0 2px 12px rgba(20,30,70,.06)}
+  .row{display:flex;gap:10px}
+  .row .field{flex:1;min-width:0}
+  .field{margin-bottom:18px}
+  .lbl{display:block;font-size:15px;font-weight:700;margin-bottom:8px}
+  .lbl em{color:#c92a2a;font-style:normal}
+  select,input[type=text]{display:block;width:100%;height:52px;border:1.5px solid #cfd5e6;border-radius:12px;
+    padding:0 12px;font-size:17px;color:#1b2340;background:#fff;font-family:inherit}
+  select:focus,input[type=text]:focus{outline:none;border-color:#3b5bdb;box-shadow:0 0 0 3px rgba(59,91,219,.15)}
+  .agree{background:#f6f7fc;border-radius:12px;padding:14px;font-size:13px;color:#6b7394;line-height:1.6;margin-bottom:18px}
+  .agree b{color:#1b2340}
+  .agree label{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:15px;font-weight:700;color:#1b2340}
+  .agree input{width:22px;height:22px}
+  .btn{display:block;width:100%;height:56px;border:0;border-radius:14px;background:#1e3a8a;color:#fff;
+    font-size:18px;font-weight:800;font-family:inherit;cursor:pointer}
+  .btn:disabled{background:#9aa6c9}
+  .btn.ghost{background:#fff;color:#1e3a8a;border:1.5px solid #1e3a8a}
+  .msg{margin-top:14px;font-size:15px;font-weight:700;text-align:center;color:#c92a2a;min-height:20px}
+  .notice{display:none;background:#fff4e6;color:#8a4b00;border-radius:12px;padding:12px 14px;
+    font-size:13px;margin-bottom:16px;line-height:1.6}
+  #done{display:none;text-align:center;padding:8px 0}
+  .ok{width:72px;height:72px;border-radius:50%;background:#e6f6ef;color:#12805c;font-size:40px;font-weight:800;
+    line-height:72px;margin:0 auto 14px}
+  #done h2{font-size:22px;margin-bottom:8px}
+  #done p{color:#6b7394;margin-bottom:16px;line-height:1.6}
+  .sum{background:#f6f7fc;border-radius:12px;padding:14px;font-size:16px;font-weight:700;margin-bottom:18px}
+  footer{text-align:center;color:#8a91ad;font-size:12px;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="school">관동중학교</div>
+    <h1>진로진학설명회<br>학부모 등록</h1>
+    <div class="meta">참석해주셔서 감사합니다. 참석하신 학부모님께서는 아래 정보를 입력해 주세요.</div>
+    <div class="count" id="count"></div>
+  </header>
+
+  <div class="notice" id="notice"></div>
+
+  <div class="card">
+    <form id="form" autocomplete="off" onsubmit="return false;">
+      <div class="row">
+        <div class="field">
+          <label class="lbl" for="grade">학년 <em>*</em></label>
+          <select id="grade" name="grade">
+            <option value="">선택</option>
+            <option value="1">1학년</option>
+            <option value="2">2학년</option>
+            <option value="3">3학년</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="lbl" for="cls">반 <em>*</em></label>
+          <select id="cls" name="cls">
+            <option value="">선택</option>
+            <option value="1">1반</option>
+            <option value="2">2반</option>
+            <option value="3">3반</option>
+            <option value="4">4반</option>
+            <option value="5">5반</option>
+            <option value="6">6반</option>
+            <option value="7">7반</option>
+            <option value="8">8반</option>
+            <option value="9">9반</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="student">학생 이름 <em>*</em></label>
+        <input type="text" id="student" name="student" maxlength="20" placeholder="예) 김민준">
+      </div>
+      <div class="field">
+        <label class="lbl" for="parent">학부모 이름 <em>*</em></label>
+        <input type="text" id="parent" name="parent" maxlength="20" placeholder="예) 김영희">
+      </div>
+
+      <div class="agree">
+        <b>개인정보 수집·이용 안내</b><br>
+        수집 항목: 학년, 반, 학생 이름, 학부모 이름<br>
+        이용 목적: 진로진학설명회 참석 확인<br>
+        보유 기간: 설명회 종료 후 파기
+        <label><input type="checkbox" id="agree"> 위 내용에 동의합니다</label>
+      </div>
+
+      <button type="button" class="btn" id="btn">등록하기</button>
+      <div class="msg" id="msg"></div>
+    </form>
+
+    <div id="done">
+      <div class="ok">✓</div>
+      <h2 id="doneTitle">등록이 완료되었습니다</h2>
+      <p>진로진학설명회에 참석해 주셔서 감사합니다.</p>
+      <div class="sum" id="sum"></div>
+      <button type="button" class="btn ghost" id="again">다른 학부모 등록하기</button>
+    </div>
+  </div>
+  <footer>관동중학교</footer>
+</div>
+
+<script>
+(function () {
+  function $(id) { return document.getElementById(id); }
+  var configured = typeof API_URL === 'string' && /^https:\/\/script\.google(usercontent)?\.com\//.test(API_URL);
+
+  function notice(html) { $('notice').innerHTML = html; $('notice').style.display = 'block'; }
+  function msg(t) { $('msg').textContent = t || ''; }
+
+  if (!configured) {
+    notice('⚠️ <b>관리자 안내</b>: index.html 위쪽 <b>https://script.google.com/macros/s/AKfycbxgz-NIdgYzaZat0w9GIx-zmMCfHQEl3g74qctruxYkFKdJREGMYHHYaLevtl21E8nlXw/exec</b>에 Apps Script 웹 앱 주소(…/exec)를 넣어 주세요.');
+  }
+
+  // JSONP 호출 (CORS 문제 없음)
+  var seq = 0;
+  function call(params, done) {
+    var name = 'cb_' + Date.now() + '_' + (seq++);
+    var s = document.createElement('script');
+    var finished = false;
+    var timer = setTimeout(function () { finish({ ok: false, message: '서버 응답이 없습니다. 잠시 후 다시 시도해 주세요.' }); }, 20000);
+    function finish(r) {
+      if (finished) return;
+      finished = true; clearTimeout(timer);
+      try { delete window[name]; } catch (e) { window[name] = undefined; }
+      if (s.parentNode) s.parentNode.removeChild(s);
+      done(r);
+    }
+    window[name] = function (r) { finish(r); };
+    s.onerror = function () { finish({ ok: false, message: '서버에 연결할 수 없습니다. (웹 앱 주소와 배포 설정을 확인하세요)' }); };
+    var q = ['callback=' + name];
+    for (var k in params) q.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+    s.src = API_URL + (API_URL.indexOf('?') < 0 ? '?' : '&') + q.join('&');
+    document.body.appendChild(s);
+  }
+
+  function showCount(n) {
+    if (typeof n !== 'number') return;
+    $('count').textContent = '현재 ' + n + '명 등록';
+    $('count').style.display = 'block';
+  }
+
+  function submit() {
+    var data = {
+      action: 'add',
+      grade: $('grade').value,
+      cls: $('cls').value,
+      student: $('student').value.replace(/\s+/g, ' ').trim(),
+      parent: $('parent').value.replace(/\s+/g, ' ').trim()
+    };
+    if (!data.grade) { msg('학년을 선택해 주세요.'); $('grade').focus(); return; }
+    if (!data.cls) { msg('반을 선택해 주세요.'); $('cls').focus(); return; }
+    if (!data.student) { msg('학생 이름을 입력해 주세요.'); $('student').focus(); return; }
+    if (!data.parent) { msg('학부모 이름을 입력해 주세요.'); $('parent').focus(); return; }
+    if (!$('agree').checked) { msg('개인정보 수집·이용에 동의해 주세요.'); return; }
+    if (!configured) { msg('등록 주소가 설정되지 않았습니다. 담당 선생님께 문의해 주세요.'); return; }
+
+    msg('');
+    $('btn').disabled = true; $('btn').textContent = '등록 중…';
+    call(data, function (r) {
+      $('btn').disabled = false; $('btn').textContent = '등록하기';
+      if (r && r.ok) {
+        $('doneTitle').textContent = r.duplicate ? '이미 등록되어 있습니다' : '등록이 완료되었습니다';
+        $('sum').textContent = data.grade + '학년 ' + data.cls + '반 ' + data.student + ' · 학부모 ' + data.parent;
+        $('form').style.display = 'none';
+        $('done').style.display = 'block';
+        showCount(r.count);
+        window.scrollTo(0, 0);
+      } else {
+        msg((r && r.message) || '등록에 실패했습니다.');
+      }
+    });
+  }
+
+  $('btn').onclick = submit;
+  $('form').onkeydown = function (e) { if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type === 'text') { e.preventDefault(); submit(); } };
+  $('again').onclick = function () {
+    $('form').reset(); msg('');
+    $('done').style.display = 'none';
+    $('form').style.display = 'block';
+    window.scrollTo(0, 0);
+  };
+
+  if (configured) call({ action: 'count' }, function (r) { if (r && r.ok) showCount(r.count); });
+})();
+</script>
+</body>
+</html>
