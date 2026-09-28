@@ -56,8 +56,8 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbxgz-NIdgYzaZat0w9GIx-zmM
 <div class="wrap">
   <header>
     <div class="school">관동중학교</div>
-    <h1>진로진학설명회<br>학부모 등록</h1>
-    <div class="meta">참석해주셔서 감사합니다. 참석하신 학부모님께서는 아래 정보를 입력해 주세요.</div>
+    <h1>진로진학설명회 학부모 등록</h1>
+    <div class="meta">2026. 관동중학교 진로진학설명회에 참석해주셔서 감사합니다. 참석하신 학부모님께서는 아래 정보를 입력해 주세요.</div>
     <div class="count" id="count"></div>
   </header>
 
@@ -127,13 +127,13 @@ var API_URL = 'https://script.google.com/macros/s/AKfycbxgz-NIdgYzaZat0w9GIx-zmM
 <script>
 (function () {
   function $(id) { return document.getElementById(id); }
-  var configured = typeof API_URL === 'https://script.google.com/macros/s/AKfycbxgz-NIdgYzaZat0w9GIx-zmMCfHQEl3g74qctruxYkFKdJREGMYHHYaLevtl21E8nlXw/exec;
+  var configured = typeof API_URL === 'string' && /^https:\/\/script\.google(usercontent)?\.com\//.test(API_URL);
 
   function notice(html) { $('notice').innerHTML = html; $('notice').style.display = 'block'; }
   function msg(t) { $('msg').textContent = t || ''; }
 
   if (!configured) {
-    notice('⚠️ <b>관리자 안내</b>: index.html 위쪽 <b>https://script.google.com/macros/s/AKfycbxgz-NIdgYzaZat0w9GIx-zmMCfHQEl3g74qctruxYkFKdJREGMYHHYaLevtl21E8nlXw/exec</b>에 Apps Script 웹 앱 주소(…/exec)를 넣어 주세요.');
+    notice('⚠️ <b>관리자 안내</b>: index.html 위쪽 <b>API_URL</b>에 Apps Script 웹 앱 주소(…/exec)를 넣어 주세요.');
   }
 
   // JSONP 호출 (CORS 문제 없음)
