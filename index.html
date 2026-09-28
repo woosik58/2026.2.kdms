@@ -50,14 +50,25 @@
   .ghost:hover{background:#f0f3ff}
   .setup{background:#fff4e6;color:#8a4b00;border-radius:12px;padding:12px 14px;font-size:13px;margin-bottom:16px;display:none;line-height:1.5}
   footer{text-align:center;color:var(--sub);font-size:12px;margin-top:18px}
+  [hidden]{display:none!important}
 </style>
+<script>
+  // 아래 본 스크립트에 오타가 있으면 화면에 위치를 알려줌
+  window.addEventListener('error', function (e) {
+    var box = document.getElementById('setup');
+    if (!box) return;
+    box.style.display = 'block';
+    box.innerHTML = '⚠️ 스크립트 오류 (' + (e.lineno || '?') + '번째 줄): ' + e.message +
+      '<br>API_URL 줄이 <b>API_URL: \'https://script.google.com/.../exec\',</b> 형태인지 확인하세요.';
+  });
+</script>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="school" id="school"></div>
-    <h1 id="title"></h1>
-    <div class="meta" id="meta"></div>
+    <div class="school" id="school">관동중학교</div>
+    <h1 id="title">진로진학설명회 학부모 등록</h1>
+    <div class="meta" id="meta">2026. 관동중학교 진로진학설명회에 참석해주셔서 감사합니다. 참석하신 학부모님께서는 아래 정보를 입력해 주세요.</div>
     <div class="count" id="count" hidden></div>
   </header>
 
@@ -70,12 +81,24 @@
           <label class="t" for="grade">학년 <em>*</em></label>
           <select id="grade" required>
             <option value="">선택</option>
+            <option value="1">1학년</option>
+            <option value="2">2학년</option>
+            <option value="3">3학년</option>
           </select>
         </div>
         <div class="field">
           <label class="t" for="cls">반 <em>*</em></label>
           <select id="cls" required>
             <option value="">선택</option>
+            <option value="1">1반</option>
+            <option value="2">2반</option>
+            <option value="3">3반</option>
+            <option value="4">4반</option>
+            <option value="5">5반</option>
+            <option value="6">6반</option>
+            <option value="7">7반</option>
+            <option value="8">8반</option>
+            <option value="9">9반</option>
           </select>
         </div>
       </div>
@@ -114,7 +137,7 @@
 <script>
 /* ===== 설정 ===== */
 const CONFIG = {
-  API_URL: '',https://script.google.com/macros/s/AKfycbwlY8SLwDQws5VIpA0iQ78-mWkBD7Eod5m-0TaZllNFRui2mwTw4xu9k9EmZwk9UQ5K-g/exec // ← Apps Script 웹 앱 URL (…/exec)
+  API_URL: '',https://script.google.com/macros/s/AKfycbwlY8SLwDQws5VIpA0iQ78-mWkBD7Eod5m-0TaZllNFRui2mwTw4xu9k9EmZwk9UQ5K-g/exec// ← Apps Script 웹 앱 URL (…/exec)
   SCHOOL: '관동중학교',
   TITLE: '진로진학설명회 학부모 등록',
   META: '참석하신 학부모님께서는 아래 정보를 입력해 주세요.',
@@ -132,12 +155,7 @@ $('footer').textContent = CONFIG.FOOTER;
 document.title = CONFIG.TITLE;
 if (!CONFIG.API_URL) $('setup').style.display = 'block';
 
-CONFIG.GRADES.forEach(g => $('grade').add(new Option(g + '학년', g)));
-$('grade').addEventListener('change', () => {
-  const sel = $('cls'); sel.length = 1;
-  const n = CONFIG.CLASSES[$('grade').value] || 0;
-  for (let i = 1; i <= n; i++) sel.add(new Option(i + '반', i));
-});
+// 학년·반 선택지는 HTML에 직접 들어 있음 (1~3학년, 1~9반)
 
 function showMsg(t, err = true) { $('msg').textContent = t; $('msg').className = 'msg' + (err ? ' err' : ''); }
 
@@ -182,7 +200,7 @@ $('form').addEventListener('submit', async e => {
 });
 
 $('again').addEventListener('click', () => {
-  $('form').reset(); $('cls').length = 1; showMsg('');
+  $('form').reset(); showMsg('');
   $('done').style.display = 'none'; $('form').style.display = 'block';
   window.scrollTo(0, 0);
 });
